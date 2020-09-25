@@ -20,12 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-def is_popular(entry: str) -> bool:
-    return False
+"""Helpers to identify popular tools and to get their config files."""
 
+from logger import LOGGER
 
-def get_config_file_names(entry: str) -> list:
-    return list()
+TOOLS = ["vscode", "vim", "bash", "zsh", "oh-my-zsh", "tmux"]
 
-def get_basepath() -> list():
+def get_config_list(entry: str) -> list:
+    """Get a list of config files for a given popular tool."""
+    LOGGER.info(entry)
     return list()

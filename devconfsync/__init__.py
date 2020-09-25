@@ -21,5 +21,3 @@
 # SOFTWARE.
 
 """devconfsync package."""
-
-DEV_CONF_SYNC_LOGGER = "devconfsync_logger"

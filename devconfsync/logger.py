@@ -23,9 +23,6 @@
 """Provides interface to logging."""
 
 import logging
-from . import constants
+import constants
 
-
-def get_logger():
-    """Returns a logger."""
-    return logging.getLogger(constants.DEV_CONF_SYNC_LOGGER)
+LOGGER = logging.getLogger(constants.DEV_CONF_SYNC_LOGGER)

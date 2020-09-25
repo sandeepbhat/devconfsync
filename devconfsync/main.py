@@ -22,6 +22,11 @@
 
 """Main entry for devconfsync."""
 
+
+import popular
+from logger import LOGGER
+from config import Config
+
 # Parse command line
 # Parse configuration
 # Copy all the files in the configuration to destination folder
@@ -30,3 +35,17 @@
 # Check git status
 # If there is a diff, stage files and commit
 # Push the files to git
+if __name__ == "__main__":
+    if not Config.parse("./.test.json"):
+        LOGGER.error("Error parsing configuraion")
+
+    tools = Config.get("tools")
+    for tool in tools:
+        if tool in popular.TOOLS:
+            tool_configs = popular.get_config_list(tool)
+            for cfg in tool_configs:
+                LOGGER.info(cfg)
+
+    files = Config.get("files")
+    for file in files:
+        LOGGER.info(file)

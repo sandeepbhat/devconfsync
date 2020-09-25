@@ -23,28 +23,36 @@
 """Configuration provider for devconfsync."""
 
 import json
-from . import logger
+from logger import LOGGER
 
-class ConfigParser():
-    """Configuration parser class."""
 
-    def __init__(self, config_file_name: str):
-        """Init method."""
-        self._config_file = config_file_name
-        self._config = dict()
-        self._logger = logger.get_logger()
+class ConfigError(Exception):
+    """Custom exception class."""
 
-    def parse(self) -> bool:
+
+class Config():
+    """Provide interface for parsing and reading config file."""
+    __config = dict()
+
+    @staticmethod
+    def parse(config_file: str) -> bool:
         """Parse configuration file."""
+        if Config.__config:
+            return True
+
         try:
-            with open(self._config_file) as handle:
-                self._config = json.load(handle)
+            with open(config_file) as handle:
+                Config.__config = json.load(handle)
         except FileNotFoundError:
-            self._logger.error("Error parsing config file")
+            LOGGER.error("Error parsing config file")
             return False
 
         return True
 
-    def get(self, key: str):
+    @staticmethod
+    def get(key: str):
         """Get value of a given config."""
-        return self._config[key]
+        if not Config.__config:
+            raise ConfigError("Config not available!!")
+
+        return Config.__config[key]
