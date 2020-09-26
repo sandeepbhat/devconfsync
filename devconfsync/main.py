@@ -65,6 +65,7 @@ def create_dir(dir_name: str, destination: str):
 
     LOGGER.info("Creating dir -> {}".format(dir_name))
     pathlib.Path("{}/{}".format(destination, dir_name)).mkdir(exist_ok=True)
+    return True
 
 
 if __name__ == "__main__":

@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+"""Setup tool configuration."""
+
 import setuptools
 
 PACKAGE_NAME = "devconfsync"
@@ -36,17 +38,17 @@ with open("README.md") as readme:
     LONG_DESCRIPTION = readme.read()
 
 setuptools.setup(
-    name = PACKAGE_NAME,
-    version = PACKAGE_VERSION,
-    description = "Development settings sync",
-    author = "Sandeep Bhat",
-    author_email = "sandeep.anand.bhat@gmail.com",
-    license = "MIT License",
-    long_description = LONG_DESCRIPTION,
-    url = "https://github.com/sandeepbhat/devconfsync",
-    packages = ["devconfsync"],
+    name=PACKAGE_NAME,
+    version=PACKAGE_VERSION,
+    description="Development settings sync",
+    author="Sandeep Bhat",
+    author_email="sandeep.anand.bhat@gmail.com",
+    license="MIT License",
+    long_description=LONG_DESCRIPTION,
+    url="https://github.com/sandeepbhat/devconfsync",
+    packages=["devconfsync"],
     install_requires=DEPENDENCIES,
-    classifiers = [
+    classifiers=[
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: MIT License"
     ]
