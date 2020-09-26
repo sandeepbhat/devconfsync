@@ -25,4 +25,33 @@
 import logging
 import constants
 
-LOGGER = logging.getLogger(constants.DEV_CONF_SYNC_LOGGER)
+
+class Logger():
+    """Helper class for logging."""
+    __logger = None
+
+    def setup(self):
+        """Setup logging."""
+        self.__logger = logging.getLogger(constants.DEV_CONF_SYNC_LOGGER)
+        self.__logger.setLevel(logging.DEBUG)
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        console_handler.setFormatter(formatter)
+        self.__logger.addHandler(console_handler)
+
+    def info(self, msg, *args, **kwargs):
+        """Info log."""
+        self.__logger.info(msg, *args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        """Error log."""
+        self.__logger.error(msg, *args, **kwargs)
+
+    def warning(self, msg, *args, **kwargs):
+        """Warning log."""
+        self.__logger.error(msg, *args, **kwargs)
+
+
+LOGGER = Logger()
+LOGGER.setup()

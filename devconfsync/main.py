@@ -22,30 +22,58 @@
 
 """Main entry for devconfsync."""
 
-
+import pathlib
+import shutil
+import argparse
+import sys
 import popular
 from logger import LOGGER
 from config import Config
 
-# Parse command line
-# Parse configuration
-# Copy all the files in the configuration to destination folder
-#   - Copy configuration files for known tools (vscode, zsh, vim etc.)
-#   - Copy other files listed in the configuration
-# Check git status
-# If there is a diff, stage files and commit
-# Push the files to git
+
+def parse_cmdline_opts():
+    """Parse command line options."""
+    parser = argparse.ArgumentParser(
+        description="devconfsync - Sync your development tool settings")
+    parser.add_argument(
+        "-c", "--config", dest="config", required=True, help="devconfsync JSON configuration file")
+    return parser.parse_args()
+
+
+def copy_files(file_list: list, dest_dir: str) -> bool:
+    """Copy the given list of files to specified destination dir."""
+    if not pathlib.Path(dest_dir).exists():
+        LOGGER.error("Destination dir does not exist")
+        return False
+
+    for file in file_list:
+        LOGGER.info("Copying {} -> {}".format(file, dest_dir))
+        shutil.copy2(file, dest_dir)
+
+    return True
+
+
 if __name__ == "__main__":
-    if not Config.parse("./.test.json"):
+    options = parse_cmdline_opts()
+
+    if not Config.parse(options.config):
         LOGGER.error("Error parsing configuraion")
+        sys.exit(-1)
+
+    if not Config.is_valid():
+        LOGGER.error("Invalid configuration")
+        sys.exit(-1)
+
+    dest_git_dir = Config.get("destination")
+    if not pathlib.Path(dest_git_dir).exists():
+        LOGGER.error("Destination git dir does not exist")
+        sys.exit(-1)
+
+    files = Config.get("files")
+    copy_files(files, dest_git_dir)
 
     tools = Config.get("tools")
     for tool in tools:
         if tool in popular.TOOLS:
             tool_configs = popular.get_config_list(tool)
-            for cfg in tool_configs:
-                LOGGER.info(cfg)
-
-    files = Config.get("files")
-    for file in files:
-        LOGGER.info(file)
+            copy_files(tool_configs, dest_git_dir)

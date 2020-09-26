@@ -22,11 +22,33 @@
 
 """Helpers to identify popular tools and to get their config files."""
 
-from logger import LOGGER
+import os
+
 
 TOOLS = ["vscode", "vim", "bash", "zsh", "oh-my-zsh", "tmux"]
 
+CONFIGS = {
+    "vscode": {
+        "basepath": "$HOME/.config/Code/User/",
+        "files": [
+            "settings.json"
+        ]
+    },
+
+    "vim":  {
+        "basepath": "$HOME/",
+        "files": [
+            ".vimrc"
+        ]
+    },
+}
+
+
 def get_config_list(entry: str) -> list:
     """Get a list of config files for a given popular tool."""
-    LOGGER.info(entry)
-    return list()
+    basepath = str()
+    basepath = CONFIGS[entry]["basepath"]
+    if basepath.startswith("$HOME"):
+        basepath = basepath.replace("$HOME", os.environ["HOME"])
+    file_list = ["{}/{}".format(basepath, f) for f in CONFIGS[entry]["files"]]
+    return file_list

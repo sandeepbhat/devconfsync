@@ -44,7 +44,7 @@ class Config():
             with open(config_file) as handle:
                 Config.__config = json.load(handle)
         except FileNotFoundError:
-            LOGGER.error("Error parsing config file")
+            LOGGER.info("Error parsing config file")
             return False
 
         return True
@@ -56,3 +56,12 @@ class Config():
             raise ConfigError("Config not available!!")
 
         return Config.__config[key]
+
+    @staticmethod
+    def is_valid() -> bool:
+        """Check if confiugration is valid or not."""
+        required_keys = ["destination"]
+        for key in required_keys:
+            if key not in Config.__config.keys():
+                return False
+        return True

@@ -22,4 +22,4 @@
 
 """Various constants used in devconfsync."""
 
-DEV_CONF_SYNC_LOGGER = "devconfsync_logger"
+DEV_CONF_SYNC_LOGGER = "dcs_logger"
