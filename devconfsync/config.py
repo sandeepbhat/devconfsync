@@ -55,6 +55,9 @@ class Config():
         if not Config.__config:
             raise ConfigError("Config not available!!")
 
+        if key not in Config.__config.keys():
+            return None
+
         return Config.__config[key]
 
     @staticmethod

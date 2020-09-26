@@ -23,7 +23,8 @@
 """Main entry for devconfsync."""
 
 import pathlib
-import shutil
+import distutils.dir_util as dir_util
+import distutils.file_util as file_util
 import argparse
 import sys
 import popular
@@ -48,9 +49,22 @@ def copy_files(file_list: list, dest_dir: str) -> bool:
 
     for file in file_list:
         LOGGER.info("Copying {} -> {}".format(file, dest_dir))
-        shutil.copy2(file, dest_dir)
+        if pathlib.Path(file).is_dir():
+            dir_util.copy_tree(file, dest_dir)
+        else:
+            file_util.copy_file(file, dest_dir)
 
     return True
+
+
+def create_dir(dir_name: str, destination: str):
+    """Create dirs at the destination given a list of names."""
+    if not pathlib.Path(destination).exists():
+        LOGGER.error("Destination dir does not exist")
+        return False
+
+    LOGGER.info("Creating dir -> {}".format(dir_name))
+    pathlib.Path("{}/{}".format(destination, dir_name)).mkdir(exist_ok=True)
 
 
 if __name__ == "__main__":
@@ -69,11 +83,22 @@ if __name__ == "__main__":
         LOGGER.error("Destination git dir does not exist")
         sys.exit(-1)
 
-    files = Config.get("files")
-    copy_files(files, dest_git_dir)
-
+    # Get config files for popular tools
     tools = Config.get("tools")
-    for tool in tools:
-        if tool in popular.TOOLS:
-            tool_configs = popular.get_config_list(tool)
-            copy_files(tool_configs, dest_git_dir)
+    if tools:
+        for tool in tools:
+            if tool in popular.POPULAR_TOOLS:
+                # Create a dir with name of the tool at destination
+                create_dir(tool, dest_git_dir)
+                # Get the list of config files for the tool
+                popular_configs = popular.get_config_list(tool)
+                # Copy the files
+                copy_files(popular_configs, "{}/{}".format(dest_git_dir, tool))
+            else:
+                LOGGER.error("{} tool not recognized: consider using \"files\" section")
+
+    # Get user defined file list
+    userdefined_files = Config.get("files")
+    # Copy user defined files
+    if userdefined_files:
+        copy_files(userdefined_files, dest_git_dir)

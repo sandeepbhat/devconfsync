@@ -25,13 +25,14 @@
 import os
 
 
-TOOLS = ["vscode", "vim", "bash", "zsh", "oh-my-zsh", "tmux"]
+POPULAR_TOOLS = ["vscode", "vim", "bash", "zsh", "tmux"]
 
-CONFIGS = {
+POPULAR_CONFIGS = {
     "vscode": {
         "basepath": "$HOME/.config/Code/User/",
         "files": [
-            "settings.json"
+            "settings.json",
+            "keybindings.json"
         ]
     },
 
@@ -41,14 +42,34 @@ CONFIGS = {
             ".vimrc"
         ]
     },
+
+    "zsh": {
+        "basepath": "$HOME/",
+        "files": [
+            ".zshrc"
+        ]
+    },
+
+    "bash": {
+        "basepath": "$HOME/",
+        "files": [
+            ".bashrc"
+        ]
+    },
+
+    "tmux": {
+        "basepath": "$HOME/",
+        "files": [
+            ".tmux.conf"
+        ]
+    },
 }
 
 
 def get_config_list(entry: str) -> list:
     """Get a list of config files for a given popular tool."""
-    basepath = str()
-    basepath = CONFIGS[entry]["basepath"]
+    basepath = POPULAR_CONFIGS[entry]["basepath"]
     if basepath.startswith("$HOME"):
         basepath = basepath.replace("$HOME", os.environ["HOME"])
-    file_list = ["{}/{}".format(basepath, f) for f in CONFIGS[entry]["files"]]
-    return file_list
+
+    return ["{}/{}".format(basepath, f) for f in POPULAR_CONFIGS[entry]["files"]]

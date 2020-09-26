@@ -50,7 +50,7 @@ class Logger():
 
     def warning(self, msg, *args, **kwargs):
         """Warning log."""
-        self.__logger.error(msg, *args, **kwargs)
+        self.__logger.warning(msg, *args, **kwargs)
 
 
 LOGGER = Logger()
