@@ -28,6 +28,7 @@ import distutils.file_util as file_util
 import argparse
 import sys
 import popular
+import gitsync
 from logger import LOGGER
 from config import Config
 
@@ -103,3 +104,5 @@ if __name__ == "__main__":
     # Copy user defined files
     if userdefined_files:
         copy_files(userdefined_files, dest_git_dir)
+
+    gitsync.publish_changes(dest_git_dir)
