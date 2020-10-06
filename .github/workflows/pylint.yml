@@ -18,10 +18,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint
         pip install -r requirements.txt
-    - name: set environment variables
-      uses: allenevans/set-env@v1.0.0
-      with:
-        PYTHONPATH: devconfsync
+    - name: set devconfsync environment variables
+      id: set_devconfsync_env_vars 
+      run: |
+        echo "PYTHONPATH=$PYTHONPATH:devconfsync" >> $GITHUB_ENV
     - name: Analysing the code with pylint
       run: |
         find . -name "*.py" | xargs -I {} pylint {}
