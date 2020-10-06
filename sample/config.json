@@ -1,0 +1,12 @@
+{
+    "destination": "/home/user/repos/devconfsynctest",
+    "tools": [
+        "zsh",
+        "tmux",
+        "vim",
+        "vscode"
+    ],
+    "files": [
+        "/home/user/important_file.extension"
+    ]
+}
